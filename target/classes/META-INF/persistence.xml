@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+    <persistence-unit name="tasktkPu" transaction-type="JTA">
+        <jta-data-source>java:/PostgresDS</jta-data-source>
+        <properties>
+            <!-- Database dialect for PostgreSQL -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+
+            <!-- Hibernate auto-detection for entities and mappings -->
+            <property name="hibernate.archive.autodetection" value="class, hbm"/>
+
+            <!-- Print SQL to stdout (useful for debugging) -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+
+            <!-- Schema generation (update for development, remove or set to validate in production) -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- Flush mode -->
+            <property name="hibernate.flushMode" value="AUTO"/>
+
+            <!-- Disable second-level cache (optional, based on your needs) -->
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.cache.use_query_cache" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>
