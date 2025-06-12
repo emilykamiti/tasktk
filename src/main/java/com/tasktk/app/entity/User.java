@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "users")
-//might need a named query to included.
+//might need a named query to be included.
 @DynamicInsert
 @DynamicUpdate
 public class User  extends BaseEntity{
