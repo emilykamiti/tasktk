@@ -18,7 +18,7 @@ You're not alone. Navigating through endless menus just to find a basic function
 - ✅ Assign and track tasks with ease
 - ✅ Plan projects visually and intuitively
 - ✅ Communicate seamlessly through built-in messaging
-- ✅ Monitor progress with powerful, clear analytics
+- ✅ Monitor progress with clear analytics
 - ✅ All from a single, well-laid-out dashboard
 
 ---
