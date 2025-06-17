@@ -10,27 +10,34 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Teams")
+@Table(name = "teams")
 @DynamicInsert
 @DynamicUpdate
 public class Team extends BaseEntity {
-    private String name;
-    private String description;
-    private LocalDateTime createdAt;
+
 
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
+    private String name;
+
+    @NotNull
+    @Column(name = "description", nullable = false, unique = true)
+    private String description;
+    private LocalDateTime createdAt;
+
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
-    @NotNull
-    @Column(name = "description", nullable = false, unique = true)
+
     public String getDescription() {
+
         return description;
     }
 
@@ -40,6 +47,7 @@ public class Team extends BaseEntity {
 
 
     public LocalDateTime getCreatedAt() {
+
         return createdAt;
     }
 

@@ -1,13 +1,41 @@
 package com.tasktk.app.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.util.Date;
 
+@Entity
+@Table(name = "messages")
+//might need a named query to be included.
+@DynamicInsert
+@DynamicUpdate
 public class Message extends BaseEntity{
-    //team_id
-    //sender_id
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
+
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", nullable = false)
+    private User sender;
+
+    @NotNull
+    @Column(name = "content", nullable = false, unique = true)
     private String content;
+
+    @NotNull
+    @Column(name = "timeStand", nullable = false, unique = true)
     private Date timeStamp;
-    private Boolean is_read;
+
+    @NotNull
+    @Column(name = "isRead", nullable = false, unique = true)
+    private Boolean isRead;
 
     public String getContent() {
         return content;
@@ -25,11 +53,11 @@ public class Message extends BaseEntity{
         this.timeStamp = timeStamp;
     }
 
-    public Boolean getIs_read() {
-        return is_read;
+    public @NotNull Boolean getRead() {
+        return isRead;
     }
 
-    public void setIs_read(Boolean is_read) {
-        this.is_read = is_read;
+    public void setRead(@NotNull Boolean read) {
+        isRead = read;
     }
 }

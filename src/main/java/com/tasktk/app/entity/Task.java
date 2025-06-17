@@ -1,18 +1,59 @@
 package com.tasktk.app.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Task extends BaseEntity{
+@Entity
+@Table(name = "tasks")
+@DynamicInsert
+@DynamicUpdate
+public class Task extends BaseEntity {
+
+    @NotNull
+    @Column(name = "title", nullable = false, unique = true)
     private String title;
+
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private Status status;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", nullable = false)
     private Priority priority;
-    private Date due_date;
-    //assigned_to
-    //team_id
+
+    @NotNull
+    @Column(name = "due_date", nullable = false)
+    private Date dueDate;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_to", nullable = false)
+    private User assignedTo;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
+
+    @NotNull
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
 
     public String getTitle() {
         return title;
@@ -46,12 +87,28 @@ public class Task extends BaseEntity{
         this.priority = priority;
     }
 
-    public Date getDue_date() {
-        return due_date;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setDue_date(Date due_date) {
-        this.due_date = due_date;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -70,16 +127,15 @@ public class Task extends BaseEntity{
         this.updatedAt = updatedAt;
     }
 
-    public enum Priority{
-        low,
-        medium,
-        high
+    public enum Priority {
+        LOW,
+        MEDIUM,
+        HIGH
     }
 
-    public enum Status{
-       pending,
-        in_progress,
-        done
+    public enum Status {
+        PENDING,
+        IN_PROGRESS,
+        DONE
     }
-
 }

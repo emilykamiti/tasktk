@@ -1,2 +1,12 @@
 /home/nasinza/tasktk/src/main/java/com/tasktk/TestEntity.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/TestResource.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/action/UserAction.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/dao/GenericDao.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/dao/GenericDaoI.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/Activity.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/BaseEntity.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/Message.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/Task.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/Team.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/User.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/entity/UserTeam.java
