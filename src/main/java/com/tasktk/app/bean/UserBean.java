@@ -5,7 +5,6 @@ import com.tasktk.app.entity.User;
 import com.tasktk.app.utility.EncryptText;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
@@ -41,6 +40,11 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
     return user;
     }
 
+    //get
+    @Override
+    public User findById(Long userId) {
+        return em.find(User.class, userId);
+    }
 
     //update
     @Override
@@ -76,12 +80,6 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
             LOGGER.info("User with ID" + user.getId() + "not found for deletion");
             return false;
         }
-    }
-
-    //get
-    @Override
-    public User findById(Long userId) {
-        return em.find(User.class, userId);
     }
 
 }
