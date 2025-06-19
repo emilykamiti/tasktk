@@ -15,6 +15,13 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class User  extends BaseEntity{
 
+    public User(String email, String password,String oldPassword) {
+        this.email = email;
+        this.password = password;
+        this.oldPassword = oldPassword;
+
+    }
+
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
     private String name;
@@ -36,6 +43,7 @@ public class User  extends BaseEntity{
     @NotNull
     @Column(name = "role", nullable = false, unique = true)
     private Role role;
+
 
     public String getName() {
         return name;

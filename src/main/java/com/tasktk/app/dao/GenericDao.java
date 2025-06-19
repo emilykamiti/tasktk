@@ -99,6 +99,7 @@ public class GenericDao<T> implements GenericDaoI<T> {
 
     @Override
     public T findById(Class<T> entity, Long id) {
+
         return em.find(entity, id);
     }
 
@@ -115,10 +116,12 @@ public class GenericDao<T> implements GenericDaoI<T> {
     }
 
     public EntityManager getEm() {
+
         return em;
     }
 
     public void setEm(EntityManager em) {
+
         this.em = em;
     }
 }
