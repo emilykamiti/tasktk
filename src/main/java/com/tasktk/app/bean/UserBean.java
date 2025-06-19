@@ -25,6 +25,7 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
     @PersistenceContext
     private EntityManager em;
 
+    //create
     @Override
     public User register(User user) throws SQLException {
 
@@ -41,6 +42,7 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
     }
 
 
+    //update
     @Override
     public boolean changePwd(User user) {
 
@@ -60,6 +62,7 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
         return false;
     }
 
+    //delete
     @Override
     public boolean unregister(User user) {
         if(user == null || user.getId() == null){
@@ -75,6 +78,7 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
         }
     }
 
+    //get
     @Override
     public User findById(Long userId) {
         return em.find(User.class, userId);
