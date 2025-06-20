@@ -24,17 +24,20 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         return message;
     }
 
+    //find message by id
     @Override
     public Message findById(Long messageId) {
         return em.find(Message.class, messageId);
     }
 
+    //get all messages
     public List<Message> listAll() {
         LOGGER.info("Retrieving all messages");
         TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m", Message.class);
         return query.getResultList();
     }
 
+    //update message
     @Override
     public boolean updateMessage(Message message) throws SQLException {
         Message existingMessage = em.find(Message.class, message.getId());
@@ -54,6 +57,7 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         return true;
     }
 
+    //delete message
     @Override
     public boolean deleteMessage(Message message) {
         if (message == null || message.getId()== null){

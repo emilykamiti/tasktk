@@ -36,11 +36,13 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
         return team;
     }
 
+    //find team by id
     @Override
     public Team findById(Long teamId) {
         return em.find(Team.class, teamId);
     }
 
+    //getAll
     public List<Team> listAll() {
         LOGGER.info("Retrieving all tasks");
         TypedQuery<Team> query = em.createQuery("SELECT m FROM Team t", Team.class);

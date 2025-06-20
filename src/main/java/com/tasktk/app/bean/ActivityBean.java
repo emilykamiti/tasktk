@@ -23,6 +23,7 @@ public class ActivityBean extends GenericBean<Activity> implements ActivityBeanI
     private EntityManager em;
 
 
+    //create activity
     @Override
     public Activity createActivity(Activity activity) throws SQLException {
         LOGGER.info("create Activity: " + activity.getType());
@@ -31,15 +32,20 @@ public class ActivityBean extends GenericBean<Activity> implements ActivityBeanI
         return activity;
     }
 
+    // find  activity by id
     @Override
     public Activity findById(Long activityId) {
         return em.find(Activity.class, activityId);
     }
+
+    // list all activity
     public List<Activity> listAll() {
         LOGGER.info("Retrieving all activities");
         TypedQuery<Activity> query = em.createQuery("SELECT m FROM Activity a", Activity.class);
         return query.getResultList();
     }
+
+    //update message
     @Override
     public boolean updateActivity(Activity activity) throws SQLException {
         Activity existingActivity = em.find(Activity.class, activity.getId());
@@ -59,6 +65,7 @@ public class ActivityBean extends GenericBean<Activity> implements ActivityBeanI
         return true;
     }
 
+    //delete activity
     @Override
     public boolean deleteActivity(Activity activity) {
         if (activity == null || activity.getId()== null){

@@ -23,6 +23,7 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
     @PersistenceContext
     private EntityManager em;
 
+    //create task
     @Override
     public Task createTask(Task task) throws SQLException {
         LOGGER.info("create task: " + task.getTitle());
@@ -31,17 +32,21 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
         return task;
     }
 
+    //find task  by id
     @Override
     public Task findById(Long taskId) {
         return em.find(Task.class, taskId);
     }
 
+    //get all tasks
     public List<Task> listAll() {
         LOGGER.info("Retrieving all tasks");
         TypedQuery<Task> query = em.createQuery("SELECT m FROM Task t", Task.class);
         return query.getResultList();
     }
 
+
+    //update task
     @Override
     public boolean updateTask(Task task) throws SQLException {
         Task existingTask = em.find(Task.class, task.getId());
@@ -61,6 +66,7 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
         return true;
     }
 
+    //delete task
     @Override
     public boolean deleteTask(Task task) {
         if (task == null || task.getId()== null){
