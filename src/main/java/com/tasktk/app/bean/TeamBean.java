@@ -2,6 +2,7 @@ package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TeamBeanI;
 import com.tasktk.app.entity.Team;
+import com.tasktk.app.entity.User;
 import com.tasktk.app.utility.EncryptText;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -35,10 +36,10 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
 
     @Override
     public Team findById(Long teamId) {
-        return null;
+        return em.find(Team.class, teamId);
     }
 
-    //update
+    //update team
     @Override
     public boolean updateTeam(Team team) throws SQLException {
 
@@ -60,7 +61,7 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
         return true;
     }
 
-    //delete
+    //delete team
     @Override
     public boolean deleteTeam(Team team) {
         if (team == null || team.getId()== null){
@@ -71,11 +72,10 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
             getDao().delete(Team.class, team.getId());
             return true;
         }catch (EntityNotFoundException e){
-            LOGGER.info("Tea with ID" + team.getId() + "not found deletion");
+            LOGGER.info("Team with ID" + team.getId() + "not found deletion");
             return false;
         }
     }
-
 
     private boolean doesTeamExistByName(String name) {
         if (name == null || name.trim().isEmpty()) {

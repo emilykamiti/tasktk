@@ -24,7 +24,7 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
     @PersistenceContext
     private EntityManager em;
 
-    //create
+    //create user
     @Override
     public User register(User user) throws SQLException {
 
@@ -40,7 +40,9 @@ public class UserBean extends GenericBean<User> implements UserBeanI {
     return user;
     }
 
-    //get
+    //get users?
+
+    //get user
     @Override
     public User findById(Long userId) {
         return em.find(User.class, userId);
