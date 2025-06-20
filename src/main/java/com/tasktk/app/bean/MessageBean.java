@@ -7,8 +7,10 @@ import com.tasktk.app.entity.Task;
 import com.tasktk.app.entity.Team;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.TypedQuery;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Stateless
@@ -20,6 +22,17 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         getDao().addOrUpdate(message);
 
         return message;
+    }
+
+    @Override
+    public Message findById(Long messageId) {
+        return em.find(Message.class, messageId);
+    }
+
+    public List<Message> listAll() {
+        LOGGER.info("Retrieving all messages");
+        TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m", Message.class);
+        return query.getResultList();
     }
 
     @Override
@@ -56,8 +69,5 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         }
     }
 
-    @Override
-    public Message findById(Long messageId) {
-        return em.find(Message.class, messageId);
-    }
+
 }

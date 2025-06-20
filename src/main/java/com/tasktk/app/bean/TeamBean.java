@@ -1,6 +1,7 @@
 package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TeamBeanI;
+import com.tasktk.app.entity.Task;
 import com.tasktk.app.entity.Team;
 import com.tasktk.app.entity.User;
 import com.tasktk.app.utility.EncryptText;
@@ -11,6 +12,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class TeamBean extends GenericBean<Team> implements TeamBeanI {
@@ -39,6 +41,12 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
         return em.find(Team.class, teamId);
     }
 
+    public List<Team> listAll() {
+        LOGGER.info("Retrieving all tasks");
+        TypedQuery<Team> query = em.createQuery("SELECT m FROM Team t", Team.class);
+        return query.getResultList();
+    }
+
     //update team
     @Override
     public boolean updateTeam(Team team) throws SQLException {
@@ -60,6 +68,7 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
 
         return true;
     }
+
 
     //delete team
     @Override

@@ -1,14 +1,17 @@
 package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TaskBeanI;
+import com.tasktk.app.entity.Message;
 import com.tasktk.app.entity.Task;
 import com.tasktk.app.utility.EncryptText;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class TaskBean extends GenericBean<Task> implements TaskBeanI {
@@ -31,6 +34,12 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
     @Override
     public Task findById(Long taskId) {
         return em.find(Task.class, taskId);
+    }
+
+    public List<Task> listAll() {
+        LOGGER.info("Retrieving all tasks");
+        TypedQuery<Task> query = em.createQuery("SELECT m FROM Task t", Task.class);
+        return query.getResultList();
     }
 
     @Override

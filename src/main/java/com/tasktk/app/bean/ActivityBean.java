@@ -2,13 +2,16 @@ package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.ActivityBeanI;
 import com.tasktk.app.entity.Activity;
+import com.tasktk.app.entity.Task;
 import com.tasktk.app.utility.EncryptText;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ActivityBean extends GenericBean<Activity> implements ActivityBeanI{
@@ -32,7 +35,11 @@ public class ActivityBean extends GenericBean<Activity> implements ActivityBeanI
     public Activity findById(Long activityId) {
         return em.find(Activity.class, activityId);
     }
-
+    public List<Activity> listAll() {
+        LOGGER.info("Retrieving all activities");
+        TypedQuery<Activity> query = em.createQuery("SELECT m FROM Activity a", Activity.class);
+        return query.getResultList();
+    }
     @Override
     public boolean updateActivity(Activity activity) throws SQLException {
         Activity existingActivity = em.find(Activity.class, activity.getId());
