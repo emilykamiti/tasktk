@@ -16,7 +16,7 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
     private static final Logger LOGGER = Logger.getLogger(TaskBean.class.getName());
     @Override
     public Message createMessage(Message message) throws SQLException {
-        LOGGER.info("create task: " + message.getContent());
+        LOGGER.info("create message: " + message.getContent());
         getDao().addOrUpdate(message);
 
         return message;
@@ -26,16 +26,16 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
     public boolean updateMessage(Message message) throws SQLException {
         Message existingMessage = em.find(Message.class, message.getId());
         if(existingMessage == null){
-            LOGGER.info("Task with ID" + message.getId() + "not found for update");
+            LOGGER.info("Message with ID" + message.getId() + "not found for update");
             return false;
         }
         if(message.getContent() !=null && message.getContent().equals(existingMessage.getContent())){
-            throw new RuntimeException(("Task with name" + message.getContent()
+            throw new RuntimeException(("Message with name" + message.getContent()
                     + "already exists"));
         }
         existingMessage.setContent(message.getContent());
 
-        LOGGER.info("Updating task:" + existingMessage.getContent());
+        LOGGER.info("Updating message:" + existingMessage.getContent());
         getDao().addOrUpdate(existingMessage);
 
         return true;
@@ -44,14 +44,14 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
     @Override
     public boolean deleteMessage(Message message) {
         if (message == null || message.getId()== null){
-            throw  new IllegalArgumentException(("Task and task ID are required for deletion"));
+            throw  new IllegalArgumentException(("Message and message ID are required for deletion"));
         }
         try{
-            LOGGER.info("Deleting task with ID:" + message.getId());
+            LOGGER.info("Deleting message with ID:" + message.getId());
             getDao().delete(Task.class, message.getId());
             return true;
         }catch (EntityNotFoundException e){
-            LOGGER.info("Task with ID" + message.getId() + "not found deletion");
+            LOGGER.info("Message with ID" + message.getId() + "not found deletion");
             return false;
         }
     }
