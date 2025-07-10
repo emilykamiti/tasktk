@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 @Table(name = "audit_logs")
 public class AuditLog extends BaseEntity {
 
-    @Column(name = "log_details", columnDefinition = "longtext")
+    @Column(name = "log_details", columnDefinition = "TEXT")
     private String logDetails;
 
     public String getLogDetails() {

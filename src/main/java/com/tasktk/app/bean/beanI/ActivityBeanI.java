@@ -4,12 +4,7 @@ import com.tasktk.app.entity.Activity;
 
 import java.sql.SQLException;
 
-public interface ActivityBeanI extends GenericBeanI<Activity>{
-    Activity createActivity (Activity activity) throws SQLException;
-
+public interface ActivityBeanI extends GenericBeanI <Activity> {
     boolean updateActivity(Activity activity) throws SQLException;
 
-    boolean deleteActivity(Activity activity);
-
-    Activity findById(Long activityId);
 }

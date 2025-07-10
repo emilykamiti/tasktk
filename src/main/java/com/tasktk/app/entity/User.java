@@ -44,6 +44,10 @@ public class User  extends BaseEntity{
     @Column(name = "role", nullable = false, unique = true)
     private Role role;
 
+    public User() {
+
+    }
+
 
     public String getName() {
         return name;

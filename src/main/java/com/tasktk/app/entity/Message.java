@@ -9,7 +9,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "messages")
-//might need a named query to be included.
 @DynamicInsert
 @DynamicUpdate
 public class Message extends BaseEntity{

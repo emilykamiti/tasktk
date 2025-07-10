@@ -1,9 +1,10 @@
 package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TaskBeanI;
-import com.tasktk.app.entity.Message;
+import com.tasktk.app.entity.Activity;
 import com.tasktk.app.entity.Task;
 import com.tasktk.app.utility.EncryptText;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,42 +15,30 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Stateless
 public class TaskBean extends GenericBean<Task> implements TaskBeanI {
     private static final Logger LOGGER = Logger.getLogger(TaskBean.class.getName());
 
-    @Inject
-    private EncryptText encryptText;
 
-    @PersistenceContext
-    private EntityManager em;
-
-    //create task
     @Override
-    public Task createTask(Task task) throws SQLException {
+    public Task addOrUpdate(Task task)  {
         LOGGER.info("create task: " + task.getTitle());
-        getDao().addOrUpdate(task);
-
-        return task;
+        return getDao().addOrUpdate(task);
     }
 
-    //find task  by id
-    @Override
     public Task findById(Long taskId) {
-        return em.find(Task.class, taskId);
+        return getDao().findById(Task.class, taskId);
     }
 
-    //get all tasks
-    public List<Task> listAll() {
-        LOGGER.info("Retrieving all tasks");
-        TypedQuery<Task> query = em.createQuery("SELECT m FROM Task t", Task.class);
-        return query.getResultList();
+    public List<Task>  list() {
+        LOGGER.info("Retrieving all activities");
+        return getDao().list(new Task());
     }
-
 
     //update task
     @Override
     public boolean updateTask(Task task) throws SQLException {
-        Task existingTask = em.find(Task.class, task.getId());
+        Task existingTask = getDao().findById(Task.class, task.getId());
         if(existingTask ==null){
             LOGGER.info("Task with ID" + task.getId() + "not found for update");
             return false;
@@ -66,9 +55,8 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
         return true;
     }
 
-    //delete task
-    @Override
-    public boolean deleteTask(Task task) {
+
+    public boolean delete(Task task) {
         if (task == null || task.getId()== null){
             throw  new IllegalArgumentException(("Task and task ID are required for deletion"));
         }

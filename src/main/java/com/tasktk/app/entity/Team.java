@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 public class Team extends BaseEntity {
 
-
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
     private String name;

@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "activities")
-//might need a named query to be included.
 @DynamicInsert
 @DynamicUpdate
 public class Activity extends BaseEntity {

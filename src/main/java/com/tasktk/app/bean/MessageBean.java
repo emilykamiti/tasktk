@@ -1,12 +1,13 @@
 package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.MessageBeanI;
-import com.tasktk.app.entity.Message;
+import com.tasktk.app.entity.Activity;
 import com.tasktk.app.entity.Message;
 import com.tasktk.app.entity.Task;
-import com.tasktk.app.entity.Team;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.sql.SQLException;
@@ -16,31 +17,29 @@ import java.util.logging.Logger;
 @Stateless
 public class MessageBean extends GenericBean<Message> implements MessageBeanI {
     private static final Logger LOGGER = Logger.getLogger(TaskBean.class.getName());
+
+
     @Override
-    public Message createMessage(Message message) throws SQLException {
+    public Message addOrUpdate(Message message) {
         LOGGER.info("create message: " + message.getContent());
         getDao().addOrUpdate(message);
 
         return message;
     }
 
-    //find message by id
-    @Override
     public Message findById(Long messageId) {
-        return em.find(Message.class, messageId);
+        return getDao().findById(Message.class, messageId);
     }
 
-    //get all messages
-    public List<Message> listAll() {
+    public List<Message> list() {
         LOGGER.info("Retrieving all messages");
-        TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m", Message.class);
-        return query.getResultList();
+        return getDao().list(new Message());
     }
 
     //update message
     @Override
     public boolean updateMessage(Message message) throws SQLException {
-        Message existingMessage = em.find(Message.class, message.getId());
+        Message existingMessage = getDao().findById(Message.class, message.getId());
         if(existingMessage == null){
             LOGGER.info("Message with ID" + message.getId() + "not found for update");
             return false;
@@ -58,8 +57,7 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
     }
 
     //delete message
-    @Override
-    public boolean deleteMessage(Message message) {
+    public boolean delete(Message message) {
         if (message == null || message.getId()== null){
             throw  new IllegalArgumentException(("Message and message ID are required for deletion"));
         }
@@ -72,6 +70,4 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
             return false;
         }
     }
-
-
 }

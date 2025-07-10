@@ -10,7 +10,6 @@ public class GenericDao<T> implements GenericDaoI<T> {
 
     private EntityManager em;
 
-    @SuppressWarnings({ "unchecked" })
     @Override
     public List<T> list(T entity) {
         Class<?> clazz = entity.getClass();
@@ -74,9 +73,9 @@ public class GenericDao<T> implements GenericDaoI<T> {
     @Override
     public boolean doesUserExistByEmail(String email) {
         try {
-            Query query = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.email = :email");
-            query.setParameter("email", email);
-            Long count = (Long) query.getSingleResult();
+            Long count = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.email = :email", Long.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
             return count > 0;
         } catch (NoResultException e) {
             return false;
@@ -99,7 +98,6 @@ public class GenericDao<T> implements GenericDaoI<T> {
 
     @Override
     public T findById(Class<T> entity, Long id) {
-
         return em.find(entity, id);
     }
 
