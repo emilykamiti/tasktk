@@ -23,9 +23,7 @@ public class AuthRestApi extends BaseRestApi {
     public Response login(User loginRequest) {
         try {
             User authenticatedUser = authBean.authenticate(loginRequest);
-            System.out.println(" the user is being logged in .........");
             RestResponseWrapper response = new RestResponseWrapper(true, "Login successful");
-//           response.setData(User);
             return Response.ok().entity(response).build();
 
         } catch (Exception e) {

@@ -23,8 +23,6 @@ public class UserRestApi extends BaseRestApi {
             User registeredUser = userBean.register(user);
             return respond(Response.Status.CREATED, "User registered successfully", registeredUser);
 
-        } catch (RuntimeException e) {
-            return respond(Response.Status.CONFLICT, e.getMessage());
         } catch (Exception e) {
             return respond(Response.Status.INTERNAL_SERVER_ERROR, "Registration failed");
         }
