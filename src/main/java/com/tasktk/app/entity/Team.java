@@ -22,7 +22,6 @@ public class Team extends BaseEntity {
     @NotNull
     @Column(name = "description", nullable = false, unique = true)
     private String description;
-    private LocalDateTime createdAt;
 
     public String getName() {
 
@@ -45,12 +44,5 @@ public class Team extends BaseEntity {
     }
 
 
-    public LocalDateTime getCreatedAt() {
 
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

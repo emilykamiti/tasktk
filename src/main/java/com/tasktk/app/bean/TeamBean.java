@@ -1,17 +1,12 @@
 package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TeamBeanI;
-import com.tasktk.app.entity.Task;
 import com.tasktk.app.entity.Team;
-import com.tasktk.app.utility.EncryptText;
 import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,64 +14,77 @@ import java.util.logging.Logger;
 public class TeamBean extends GenericBean<Team> implements TeamBeanI {
     private static final Logger LOGGER = Logger.getLogger(TeamBean.class.getName());
 
-
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public Team addOrUpdate(Team team) {
-        if(doesTeamExistByName(team.getName()) ){
-            throw new RuntimeException("Team with name" + team.getName() + "already exists");
+        if (doesTeamExistByName(team.getName())) {
+            throw new RuntimeException("Team with name " + team.getName() + " already exists");
         }
         LOGGER.info("create team: " + team.getName());
-        getDao().addOrUpdate(team);
-        return team;
+        return getDao().addOrUpdate(team);
     }
 
+    @Override
+    public boolean updateTeam(Long id, Team teamUpdate) {
+        if (id == null || teamUpdate == null) {
+            throw new IllegalArgumentException("ID and teamUpdate cannot be null");
+        }
+        try {
+            Team existingTeam = getDao().findById(Team.class, id);
+            if (existingTeam == null) {
+                LOGGER.info("Team with ID " + id + " not found for update");
+                return false;
+            }
+            if (teamUpdate.getName() != null && doesTeamExistByName(teamUpdate.getName()) && !id.equals(existingTeam.getId())) {
+                throw new RuntimeException("Team with name " + teamUpdate.getName() + " already exists");
+            }
+            if (teamUpdate.getName() != null) {
+                existingTeam.setName(teamUpdate.getName());
+            }
+            if (teamUpdate.getDescription() != null) {
+                existingTeam.setDescription(teamUpdate.getDescription());
+            }
+            LOGGER.info("Updating team: " + existingTeam.getName());
+            getDao().addOrUpdate(existingTeam);
+            return true;
+        } catch (Exception e) {
+            LOGGER.severe("Error updating team with ID " + id + ": " + e.getMessage());
+            throw new RuntimeException("Failed to update team: " + e.getMessage(), e);
+        }
+    }
 
+    @Override
     public Team findById(Long teamId) {
-        return getDao().findById(Team.class, teamId);
+        if (teamId == null) {
+            throw new IllegalArgumentException("Team ID cannot be null");
+        }
+        try {
+            return getDao().findById(Team.class, teamId);
+        } catch (Exception e) {
+            LOGGER.severe("Error finding team with ID " + teamId + ": " + e.getMessage());
+            return null;
+        }
     }
 
 
     public List<Team> list() {
-        LOGGER.info("Retrieving all tasks");
+        LOGGER.info("Retrieving all teams");
         return getDao().list(new Team());
-    }
-
-    //update team
-    @Override
-    public boolean updateTeam(Team team) throws SQLException {
-
-        Team existingTeam = getDao().findById(Team.class, team.getId());
-        if(existingTeam ==null){
-            LOGGER.info("Team with ID" + team.getId() + "not found for update");
-            return false;
-        }
-        if(team.getName() !=null && team.getName().equals(existingTeam.getName())){
-            throw new RuntimeException(("Team with name" + team.getName()
-            + "already exists"));
-        }
-        existingTeam.setName(team.getName());
-        existingTeam.setDescription(team.getDescription());
-
-        LOGGER.info("Updating team:" + existingTeam.getName());
-        getDao().addOrUpdate(existingTeam);
-
-        return true;
     }
 
 
     public boolean delete(Team team) {
-        if (team == null || team.getId()== null){
-            throw  new IllegalArgumentException(("Team and team ID are required for deletion"));
+        if (team == null || team.getId() == null) {
+            throw new IllegalArgumentException("Team and team ID are required for deletion");
         }
-        try{
-            LOGGER.info("Deleting team with ID:" + team.getId());
+        try {
+            LOGGER.info("Deleting team with ID: " + team.getId());
             getDao().delete(Team.class, team.getId());
             return true;
-        }catch (EntityNotFoundException e){
-            LOGGER.info("Team with ID" + team.getId() + "not found deletion");
+        } catch (EntityNotFoundException e) {
+            LOGGER.info("Team with ID " + team.getId() + " not found for deletion");
             return false;
         }
     }
@@ -85,8 +93,8 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(t) FROM) Team t WHERE t.name = :name", Long.class)
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(t) FROM Team t WHERE t.name = :name", Long.class)
                 .setParameter("name", name);
-        return query.getSingleResult() >0;
+        return query.getSingleResult() > 0;
     }
 }
