@@ -6,8 +6,4 @@ import java.sql.SQLException;
 
 public interface MessageBeanI extends  GenericBeanI<Message>{
 
-    boolean updateMessage(Message message) throws SQLException;
-
-
-
 }

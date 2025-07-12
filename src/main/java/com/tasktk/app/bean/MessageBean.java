@@ -36,24 +36,15 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         return getDao().list(new Message());
     }
 
-    //update message
     @Override
-    public boolean updateMessage(Message message) throws SQLException {
-        Message existingMessage = getDao().findById(Message.class, message.getId());
-        if(existingMessage == null){
-            LOGGER.info("Message with ID" + message.getId() + "not found for update");
-            return false;
+    public boolean update(Long id, Message messageUpdate) {
+        if (messageUpdate.getContent() != null) {
+            Message existingMessage = getDao().findById(Message.class, id);
+            if (existingMessage!= null  && !id.equals(existingMessage.getId())) {
+                throw new RuntimeException("Team with name " + messageUpdate.getContent() + " already exists");
+            }
         }
-        if(message.getContent() !=null && message.getContent().equals(existingMessage.getContent())){
-            throw new RuntimeException(("Message with name" + message.getContent()
-                    + "already exists"));
-        }
-        existingMessage.setContent(message.getContent());
-
-        LOGGER.info("Updating message:" + existingMessage.getContent());
-        getDao().addOrUpdate(existingMessage);
-
-        return true;
+        return getDao().update(id, messageUpdate);
     }
 
     //delete message

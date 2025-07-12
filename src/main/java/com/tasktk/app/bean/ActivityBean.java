@@ -2,6 +2,7 @@ package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.ActivityBeanI;
 import com.tasktk.app.entity.Activity;
+import com.tasktk.app.entity.Team;
 import jakarta.ejb.Stateless;
 
 import jakarta.persistence.EntityManager;
@@ -32,19 +33,14 @@ public class ActivityBean extends GenericBean<Activity> implements ActivityBeanI
     }
 
     @Override
-    public boolean updateActivity(Activity activity) throws SQLException {
-        Activity existingActivity = getDao().findById(Activity.class, activity.getId());
-        if (existingActivity == null) {
-            LOGGER.info("Activity with ID " + activity.getId() + " not found for update");
-            return false;
+    public boolean update(Long id, Activity activityUpdate) {
+        if (activityUpdate.getType() != null) {
+            Activity existingActivity = getDao().findById(Activity.class, id);
+            if (existingActivity!= null  && !id.equals(existingActivity.getId())) {
+                throw new RuntimeException("Team with name " + activityUpdate.getType() + " already exists");
+            }
         }
-        if (activity.getType() != null && activity.getType().equals(existingActivity.getType())) {
-            throw new RuntimeException("Activity with name " + activity.getType() + " already exists");
-        }
-        existingActivity.setType(activity.getType());
-        LOGGER.info("Updating Activity: " + existingActivity.getType());
-        getDao().addOrUpdate(existingActivity);
-        return true;
+        return getDao().update(id, activityUpdate);
     }
 
     public boolean delete(Activity activity) {
