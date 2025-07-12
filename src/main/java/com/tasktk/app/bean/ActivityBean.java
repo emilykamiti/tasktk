@@ -2,14 +2,11 @@ package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.ActivityBeanI;
 import com.tasktk.app.entity.Activity;
-import com.tasktk.app.entity.Team;
 import jakarta.ejb.Stateless;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
 
-import java.sql.SQLException;
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 import java.util.logging.Logger;
 

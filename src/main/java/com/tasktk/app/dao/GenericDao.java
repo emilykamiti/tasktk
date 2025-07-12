@@ -1,7 +1,6 @@
 package com.tasktk.app.dao;
 
 import jakarta.persistence.*;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -79,7 +78,7 @@ public class GenericDao<T> implements GenericDaoI<T> {
                 return false;
             }
 
-            // Use reflection to update non-null fields
+            //  ...look at reflection -- deep into reflection
             Field[] fields = entityUpdate.getClass().getDeclaredFields();
             for (Field field : fields) {
                 field.setAccessible(true);

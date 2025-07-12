@@ -1,18 +1,10 @@
 package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TaskBeanI;
-import com.tasktk.app.entity.Activity;
 import com.tasktk.app.entity.Task;
-import com.tasktk.app.entity.Team;
-import com.tasktk.app.utility.EncryptText;
 import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 

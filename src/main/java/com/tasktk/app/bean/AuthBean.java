@@ -24,12 +24,12 @@ public class AuthBean extends GenericBean<User> implements AuthBeanI, Serializab
         }
 
         try {
-            // 1. find user by name only
+            // find user by name only
             User user = em.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
                     .setParameter("name", loginUser.getName())
                     .getSingleResult();
 
-            // password verification
+            // verify pswd
             String hashedInput = hashText.encrypt(loginUser.getPassword());
             if (!user.getPassword().equals(hashedInput)) {
                 throw new SecurityException("Invalid credentials");
