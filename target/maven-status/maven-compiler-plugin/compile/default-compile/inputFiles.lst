@@ -5,6 +5,7 @@
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/api/config/Rest.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/api/rest/ActivityRestApi.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/api/rest/AuthRestApi.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/app/api/rest/BaseEntityRestApi.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/api/rest/BaseRestApi.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/api/rest/MessageRestApi.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/api/rest/RestResponseWrapper.java
