@@ -14,7 +14,6 @@ public class RestResponseWrapper implements Serializable {
     private Object data;
     private Map<String, Object> meta;
 
-    // Constructors
     public RestResponseWrapper() {
         this(true, "OK");
     }
@@ -34,7 +33,7 @@ public class RestResponseWrapper implements Serializable {
         this.meta = new HashMap<>();
     }
 
-    // Static factory methods
+
     public static RestResponseWrapper success() {
         return new RestResponseWrapper();
     }
@@ -82,7 +81,6 @@ public class RestResponseWrapper implements Serializable {
         return meta;
     }
 
-    // Helper methods
     public RestResponseWrapper addMeta(String key, Object value) {
         this.meta.put(key, value);
         return this;
