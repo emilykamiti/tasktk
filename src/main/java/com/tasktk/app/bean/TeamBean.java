@@ -27,45 +27,21 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
     }
 
     @Override
-    public boolean updateTeam(Long id, Team teamUpdate) {
-        if (id == null || teamUpdate == null) {
-            throw new IllegalArgumentException("ID and teamUpdate cannot be null");
-        }
-        try {
+    public boolean update(Long id, Team teamUpdate) {
+        if (teamUpdate.getName() != null) {
             Team existingTeam = getDao().findById(Team.class, id);
-            if (existingTeam == null) {
-                LOGGER.info("Team with ID " + id + " not found for update");
-                return false;
-            }
-            if (teamUpdate.getName() != null && doesTeamExistByName(teamUpdate.getName()) && !id.equals(existingTeam.getId())) {
+            if (existingTeam != null && doesTeamExistByName(teamUpdate.getName()) && !id.equals(existingTeam.getId())) {
                 throw new RuntimeException("Team with name " + teamUpdate.getName() + " already exists");
             }
-            if (teamUpdate.getName() != null) {
-                existingTeam.setName(teamUpdate.getName());
-            }
-            if (teamUpdate.getDescription() != null) {
-                existingTeam.setDescription(teamUpdate.getDescription());
-            }
-            LOGGER.info("Updating team: " + existingTeam.getName());
-            getDao().addOrUpdate(existingTeam);
-            return true;
-        } catch (Exception e) {
-            LOGGER.severe("Error updating team with ID " + id + ": " + e.getMessage());
-            throw new RuntimeException("Failed to update team: " + e.getMessage(), e);
         }
+        return getDao().update(id, teamUpdate);
     }
 
-    @Override
     public Team findById(Long teamId) {
         if (teamId == null) {
             throw new IllegalArgumentException("Team ID cannot be null");
         }
-        try {
             return getDao().findById(Team.class, teamId);
-        } catch (Exception e) {
-            LOGGER.severe("Error finding team with ID " + teamId + ": " + e.getMessage());
-            return null;
-        }
     }
 
 

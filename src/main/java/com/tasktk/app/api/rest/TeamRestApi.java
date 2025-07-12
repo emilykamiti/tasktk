@@ -26,16 +26,16 @@ public class TeamRestApi extends BaseRestApi {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTeam(
+    public Response update(
             @PathParam("id") Long id,
             @Valid Team teamUpdate) {
-        boolean success = teamBean.updateTeam(id, teamUpdate);
-        if (success) {
-            Team updatedTeam = teamBean.findById(id);
-            return Response.ok(updatedTeam).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+            boolean success = teamBean.update(id, teamUpdate);
+            if (success) {
+                Team updatedTeam = teamBean.findById(Team.class, id);
+                return Response.ok(updatedTeam).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
     }
 
     @Path("/list")

@@ -66,6 +66,39 @@ public class GenericDao<T> implements GenericDaoI<T> {
         }
     }
 
+
+    @Override
+    public boolean update(Long id, T entityUpdate) {
+        if (id == null || entityUpdate == null) {
+            throw new IllegalArgumentException("ID and entityUpdate cannot be null");
+        }
+        try {
+            T existingEntity = findById((Class<T>) entityUpdate.getClass(), id);
+            if (existingEntity == null) {
+                System.out.println("Entity with ID " + id + " not found for update");
+                return false;
+            }
+
+            // Use reflection to update non-null fields
+            Field[] fields = entityUpdate.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object newValue = field.get(entityUpdate);
+                if (newValue != null) {
+                    field.set(existingEntity, newValue);
+                }
+            }
+
+            System.out.println("Updating entity with ID: " + id);
+            em.merge(existingEntity);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error updating entity with ID " + id + ": " + e.getMessage());
+            throw new RuntimeException("Failed to update entity: " + e.getMessage(), e);
+        }
+    }
+
+
     public EntityManager getEm() {
         return em;
     }

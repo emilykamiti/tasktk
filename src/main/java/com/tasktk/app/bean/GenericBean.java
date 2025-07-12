@@ -33,6 +33,12 @@ public abstract class GenericBean<T> implements GenericBeanI<T>, Serializable {
     }
 
     @Override
+    public boolean update(Long id, T entityUpdate) {
+        genericDao.setEm(em);
+        return genericDao.update(id, entityUpdate);
+    }
+
+    @Override
     public void delete(Class<?> entityClass, Long id) {
         genericDao.setEm(em);
         genericDao.delete((Class<T>) entityClass, id);
