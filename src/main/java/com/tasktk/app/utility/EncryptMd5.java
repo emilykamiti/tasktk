@@ -1,7 +1,5 @@
-package com.resale.app.utility;
+package com.tasktk.app.utility;
 
-
-import com.tasktk.app.utility.EncryptText;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.inject.Alternative;
 
