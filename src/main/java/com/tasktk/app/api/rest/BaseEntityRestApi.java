@@ -68,6 +68,8 @@ public abstract class BaseEntityRestApi<T> extends BaseRestApi {
         }
     }
 
+
+    //Meant to delete and attribute and not an entire entity.
     @Path("/delete/{id}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)

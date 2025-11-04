@@ -1,13 +1,11 @@
 package com.tasktk.app.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "teams")
@@ -20,29 +18,33 @@ public class Team extends BaseEntity {
     private String name;
 
     @NotNull
-    @Column(name = "description", nullable = false, unique = true)
+    @Column(name = "description", nullable = false) // Removed unique=true
     private String description;
 
-    public String getName() {
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Task> tasks = new ArrayList<>();
 
-        return name;
-    }
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserTeam> userTeams = new ArrayList<>();
 
-    public void setName(String name) {
+    // Constructors
+    public Team() {}
 
+    public Team(String name, String description) {
         this.name = name;
-    }
-
-
-    public String getDescription() {
-
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 
+    // Getters and Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
+    public List<Task> getTasks() { return tasks; }
+    public void setTasks(List<Task> tasks) { this.tasks = tasks; }
+
+    public List<UserTeam> getUserTeams() { return userTeams; }
+    public void setUserTeams(List<UserTeam> userTeams) { this.userTeams = userTeams; }
 }

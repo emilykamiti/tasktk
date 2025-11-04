@@ -10,9 +10,6 @@
 
   <name>tasktk Maven Webapp</name>
   <url>http://www.example.com</url>
-    <modules>
-        <module>frontend</module>
-    </modules>
 
     <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
