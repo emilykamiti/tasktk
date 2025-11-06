@@ -48,7 +48,7 @@ public class UserRestApi extends BaseRestApi {
     @GET
     public Response getAllUsers() {
         try {
-            List<User> users = userBean.list();
+            List<User> users = userBean.list(new User());
             return respond(Response.Status.OK, "Users retrieved successfully", users);
         } catch (Exception e) {
             return respond(Response.Status.INTERNAL_SERVER_ERROR, "Error retrieving users: " + e.getMessage());

@@ -6,7 +6,7 @@
   <groupId>com.example</groupId>
   <artifactId>tasktk</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>war</packaging>
 
   <name>tasktk Maven Webapp</name>
   <url>http://www.example.com</url>
@@ -66,6 +66,11 @@
       <version>3.0.1</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.18.0</version>
+    </dependency>
     <!-- Apache Commons Lang -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -106,6 +111,7 @@
       <version>2.11.0</version>
     </dependency>
   </dependencies>
+
 
   <build>
     <finalName>tasktk</finalName>

@@ -35,7 +35,6 @@ public class Team extends BaseEntity {
         this.description = description;
     }
 
-    // Getters and Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -47,4 +46,5 @@ public class Team extends BaseEntity {
 
     public List<UserTeam> getUserTeams() { return userTeams; }
     public void setUserTeams(List<UserTeam> userTeams) { this.userTeams = userTeams; }
+
 }

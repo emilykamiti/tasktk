@@ -1,5 +1,5 @@
 // src/services/api.js
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/tasktk/app/api/rest';
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/tasktk/rest';
 
 const handleResponse = async (response) => {
   if (!response.ok) {
@@ -29,61 +29,150 @@ const createEntityApi = (endpoint) => ({
 });
 
 const api = {
-  // --- Tasks ---
+  // --- Tasks --- (using /task endpoint)
   tasks: {
-    ...createEntityApi('tasks'),
+    getAll: () => fetch(`${BASE_URL}/task`).then(handleResponse),
+    getById: (id) => fetch(`${BASE_URL}/task/${id}`).then(handleResponse),
+    create: (data) => fetch(`${BASE_URL}/task`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    update: (id, data) => fetch(`${BASE_URL}/task/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    delete: (id) => fetch(`${BASE_URL}/task/${id}`, {
+      method: 'DELETE',
+    }).then(handleResponse),
 
-    // Task-specific endpoints from your TaskRestApi
-    getByTeam: (teamId) => fetch(`${BASE_URL}/tasks/team/${teamId}`).then(handleResponse),
-    getByStatus: (status) => fetch(`${BASE_URL}/tasks/status/${status}`).then(handleResponse),
-    getByPriority: (priority) => fetch(`${BASE_URL}/tasks/priority/${priority}`).then(handleResponse),
-    updateStatus: (id, status) => fetch(`${BASE_URL}/tasks/${id}/status?status=${status}`, {
+    // Task-specific endpoints
+    getByTeam: (teamId) => fetch(`${BASE_URL}/task/team/${teamId}`).then(handleResponse),
+    getByStatus: (status) => fetch(`${BASE_URL}/task/status/${status}`).then(handleResponse),
+    getByPriority: (priority) => fetch(`${BASE_URL}/task/priority/${priority}`).then(handleResponse),
+    updateStatus: (id, status) => fetch(`${BASE_URL}/task/${id}/status?status=${status}`, {
       method: 'PATCH',
     }).then(handleResponse),
-    toggleMeeting: (id, hasMeeting) => fetch(`${BASE_URL}/tasks/${id}/meeting?hasMeeting=${hasMeeting}`, {
+    toggleMeeting: (id, hasMeeting) => fetch(`${BASE_URL}/task/${id}/meeting?hasMeeting=${hasMeeting}`, {
       method: 'PATCH',
     }).then(handleResponse),
-    updateProgress: (id, progress) => fetch(`${BASE_URL}/tasks/${id}/progress?progress=${progress}`, {
+    updateProgress: (id, progress) => fetch(`${BASE_URL}/task/${id}/progress?progress=${progress}`, {
       method: 'PATCH',
     }).then(handleResponse),
   },
 
-  // --- Users ---
+  // --- Users --- (using /user endpoint)
   users: {
-    ...createEntityApi('users'),
-    // Add user-specific endpoints as needed
-    getByTeam: (teamId) => fetch(`${BASE_URL}/users/team/${teamId}`).then(handleResponse),
+    getAll: () => fetch(`${BASE_URL}/user`).then(handleResponse),
+    getById: (id) => fetch(`${BASE_URL}/user/${id}`).then(handleResponse),
+    register: (data) => fetch(`${BASE_URL}/user/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    update: (id, data) => fetch(`${BASE_URL}/user/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    delete: (id) => fetch(`${BASE_URL}/user/${id}`, {
+      method: 'DELETE',
+    }).then(handleResponse),
+    changePassword: (data) => fetch(`${BASE_URL}/user/change-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    getByTeam: (teamId) => fetch(`${BASE_URL}/user/team/${teamId}`).then(handleResponse),
   },
 
-  // --- Teams ---
+  // --- Teams --- (using /team endpoint)
   teams: {
-    ...createEntityApi('teams'),
-    // Add team-specific endpoints as needed
-    getMembers: (teamId) => fetch(`${BASE_URL}/teams/${teamId}/members`).then(handleResponse),
+    getAll: () => fetch(`${BASE_URL}/team`).then(handleResponse),
+    getById: (id) => fetch(`${BASE_URL}/team/${id}`).then(handleResponse),
+    create: (data) => fetch(`${BASE_URL}/team`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    update: (id, data) => fetch(`${BASE_URL}/team/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    delete: (id) => fetch(`${BASE_URL}/team/${id}`, {
+      method: 'DELETE',
+    }).then(handleResponse),
+
+    // Team-specific endpoints
+    getMembers: (teamId) => fetch(`${BASE_URL}/team/${teamId}/members`).then(handleResponse),
+    getByName: (name) => fetch(`${BASE_URL}/team/name/${name}`).then(handleResponse),
+    addMember: (teamId, userId) => fetch(`${BASE_URL}/team/${teamId}/add-member/${userId}`, {
+      method: 'POST',
+    }).then(handleResponse),
+    removeMember: (teamId, userId) => fetch(`${BASE_URL}/team/${teamId}/remove-member/${userId}`, {
+      method: 'DELETE',
+    }).then(handleResponse),
   },
 
-  // --- Messages ---
+  // --- Messages --- (using /message endpoint)
   messages: {
-    ...createEntityApi('messages'),
-    // Add message-specific endpoints as needed
-    getByUser: (userId) => fetch(`${BASE_URL}/messages/user/${userId}`).then(handleResponse),
-    getByChannel: (channelId) => fetch(`${BASE_URL}/messages/channel/${channelId}`).then(handleResponse),
-    markAsRead: (id) => fetch(`${BASE_URL}/messages/${id}/read`, {
+    getAll: () => fetch(`${BASE_URL}/message`).then(handleResponse),
+    getById: (id) => fetch(`${BASE_URL}/message/${id}`).then(handleResponse),
+    create: (data) => fetch(`${BASE_URL}/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    update: (id, data) => fetch(`${BASE_URL}/message/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    delete: (id) => fetch(`${BASE_URL}/message/${id}`, {
+      method: 'DELETE',
+    }).then(handleResponse),
+
+    // Message-specific endpoints
+    getByTeam: (teamId) => fetch(`${BASE_URL}/message/team/${teamId}`).then(handleResponse),
+    getBySender: (senderId) => fetch(`${BASE_URL}/message/sender/${senderId}`).then(handleResponse),
+    getUnread: (userId) => fetch(`${BASE_URL}/message/unread/${userId}`).then(handleResponse),
+    markAsRead: (id) => fetch(`${BASE_URL}/message/${id}/read`, {
+      method: 'PATCH',
+    }).then(handleResponse),
+    markAllAsRead: (teamId, userId) => fetch(`${BASE_URL}/message/team/${teamId}/read-all/${userId}`, {
       method: 'PATCH',
     }).then(handleResponse),
   },
 
-  // --- Activities ---
+  // --- Activities --- (using /activity endpoint)
   activities: {
-    ...createEntityApi('activities'),
-    // Add activity-specific endpoints as needed
-    getByUser: (userId) => fetch(`${BASE_URL}/activities/user/${userId}`).then(handleResponse),
-    getRecent: () => fetch(`${BASE_URL}/activities/recent`).then(handleResponse),
+    getAll: () => fetch(`${BASE_URL}/activity`).then(handleResponse),
+    getById: (id) => fetch(`${BASE_URL}/activity/${id}`).then(handleResponse),
+    create: (data) => fetch(`${BASE_URL}/activity`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    update: (id, data) => fetch(`${BASE_URL}/activity/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+    delete: (id) => fetch(`${BASE_URL}/activity/${id}`, {
+      method: 'DELETE',
+    }).then(handleResponse),
+
+    // Activity-specific endpoints
+    getByUser: (userId) => fetch(`${BASE_URL}/activity/user/${userId}`).then(handleResponse),
+    getByTask: (taskId) => fetch(`${BASE_URL}/activity/task/${taskId}`).then(handleResponse),
+    getByType: (type) => fetch(`${BASE_URL}/activity/type/${type}`).then(handleResponse),
+    getRecent: (limit) => fetch(`${BASE_URL}/activity/recent/${limit}`).then(handleResponse),
   },
 
   // --- Statistics ---
   statistics: {
-    // Statistics endpoints (usually GET only)
     getOverview: () => fetch(`${BASE_URL}/statistics/overview`).then(handleResponse),
     getTeamStats: (teamId) => fetch(`${BASE_URL}/statistics/team/${teamId}`).then(handleResponse),
     getUserStats: (userId) => fetch(`${BASE_URL}/statistics/user/${userId}`).then(handleResponse),
@@ -124,7 +213,7 @@ const api = {
   files: {
     upload: (formData) => fetch(`${BASE_URL}/files/upload`, {
       method: 'POST',
-      body: formData, // FormData with file
+      body: formData,
     }).then(handleResponse),
     download: (fileId) => fetch(`${BASE_URL}/files/${fileId}/download`).then(handleResponse),
     delete: (fileId) => fetch(`${BASE_URL}/files/${fileId}`, {
@@ -140,7 +229,7 @@ const api = {
     getByUser: (userId) => fetch(`${BASE_URL}/comments/user/${userId}`).then(handleResponse),
   },
 
-  // --- Auth (if you add authentication later) ---
+  // --- Auth ---
   auth: {
     login: (credentials) => fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',

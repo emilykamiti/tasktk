@@ -50,4 +50,25 @@ public abstract class BaseRestApi {
                 wrapper.isSuccess() ? Response.Status.OK : Response.Status.INTERNAL_SERVER_ERROR
         ).entity(wrapper).build();
     }
+
+    // Add this TEMPORARY debug method to BaseRestApi
+    protected Response debugRespond(Status status, String message, Object data) {
+        System.out.println("=== DEBUG RESPOND CALLED ===");
+        System.out.println("Status: " + status);
+        System.out.println("Message: " + message);
+        System.out.println("Data: " + data);
+        System.out.println("Data type: " + (data != null ? data.getClass().getSimpleName() : "null"));
+
+        // Create wrapper manually
+        RestResponseWrapper wrapper = status.getFamily() == Status.Family.SUCCESSFUL
+                ? RestResponseWrapper.success(message)
+                : RestResponseWrapper.error(message);
+
+        System.out.println("Wrapper before setData: " + wrapper.getData());
+        wrapper.setData(data);
+        System.out.println("Wrapper after setData: " + wrapper.getData());
+        System.out.println("=== END DEBUG ===");
+
+        return Response.status(status).entity(wrapper).build();
+    }
 }

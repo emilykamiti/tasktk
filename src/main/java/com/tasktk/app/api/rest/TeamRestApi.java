@@ -8,6 +8,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
+import com.tasktk.app.entity.User;
 
 @Path("/team")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,8 +33,8 @@ public class TeamRestApi extends BaseEntityRestApi<Team> {
     @Path("/{id}/members")
     public Response getTeamMembers(@PathParam("id") Long teamId) {
         try {
-            List<Object> members = teamBean.getTeamMembers(teamId);
-            return respond(Response.Status.OK, "Team members retrieved successfully", members);
+            List<User> members = teamBean.getTeamMembers(teamId);
+            return respond(Response.Status.OK, "Team members retrieved successfully", (Object) members);
         } catch (RuntimeException e) {
             return respond(Response.Status.NOT_FOUND, e.getMessage());
         } catch (Exception e) {
@@ -88,5 +89,7 @@ public class TeamRestApi extends BaseEntityRestApi<Team> {
         } catch (Exception e) {
             return respond(Response.Status.INTERNAL_SERVER_ERROR, "Error removing team member: " + e.getMessage());
         }
+
+
     }
 }

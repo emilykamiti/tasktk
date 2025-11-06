@@ -16,7 +16,6 @@ public class UserTeam extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
@@ -27,30 +26,33 @@ public class UserTeam extends BaseEntity {
     @Column(name = "role_in_team", nullable = false)
     private RoleInTeam roleInTeam;
 
-
-    public User getUser() {
-        return user;
+    // Default constructor (required by JPA)
+    public UserTeam() {
+        this.roleInTeam = RoleInTeam.MEMBER; // Set default role
     }
 
-    public void setUser(User user) {
+    // Constructor with User and Team (used in TeamBean.java)
+    public UserTeam(User user, Team team) {
+        this();
         this.user = user;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
         this.team = team;
     }
 
-    public RoleInTeam getRoleInTeam() {
-        return roleInTeam;
-    }
-
-    public void setRoleInTeam(RoleInTeam roleInTeam) {
+    // Constructor with User, Team and Role
+    public UserTeam(User user, Team team, RoleInTeam roleInTeam) {
+        this.user = user;
+        this.team = team;
         this.roleInTeam = roleInTeam;
     }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public Team getTeam() { return team; }
+    public void setTeam(Team team) { this.team = team; }
+
+    public RoleInTeam getRoleInTeam() { return roleInTeam; }
+    public void setRoleInTeam(RoleInTeam roleInTeam) { this.roleInTeam = roleInTeam; }
 
     public enum RoleInTeam {
         ADMIN,

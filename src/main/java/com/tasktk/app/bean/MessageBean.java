@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.logging.Logger;
 
+
 @Stateless
 public class MessageBean extends GenericBean<Message> implements MessageBeanI {
     private static final Logger LOGGER = Logger.getLogger(MessageBean.class.getName());
@@ -83,7 +84,7 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         if (messageUpdate.getTimeStamp() != null) existingMessage.setTimeStamp(messageUpdate.getTimeStamp());
     }
 
-    // Additional business methods
+    // Business methods
     public List<Message> findByTeam(Long teamId) {
         if (teamId == null) {
             throw new IllegalArgumentException("Team ID cannot be null");
@@ -102,8 +103,6 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
         if (userId == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        // This would require a custom query to find unread messages for a user
-        // For now, return empty list - you'll implement this based on your specific requirements
         return java.util.Collections.emptyList();
     }
 
@@ -121,5 +120,10 @@ public class MessageBean extends GenericBean<Message> implements MessageBeanI {
             getDao().addOrUpdate(message);
         }
         return true;
+    }
+
+    @Override
+    public Message findById(Class<Message> entity, Long id) {
+        return findById(id); // Delegate to the other method
     }
 }

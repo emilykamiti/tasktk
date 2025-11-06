@@ -2,6 +2,8 @@ package com.tasktk.app.bean;
 
 import com.tasktk.app.bean.beanI.TeamBeanI;
 import com.tasktk.app.entity.Team;
+import com.tasktk.app.entity.User;
+import com.tasktk.app.entity.UserTeam;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,6 +11,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 
 @Stateless
 public class TeamBean extends GenericBean<Team> implements TeamBeanI {
@@ -30,19 +34,6 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
     }
 
     @Override
-    public boolean update(Long id, Team teamUpdate) {
-        Team existingTeam = findById(id);
-
-        if (teamUpdate.getName() != null && !teamUpdate.getName().equals(existingTeam.getName())) {
-            validateTeamNameUniqueness(teamUpdate.getName(), id);
-        }
-
-        updateTeamFields(existingTeam, teamUpdate);
-        getDao().addOrUpdate(existingTeam);
-        return true;
-    }
-
-    @Override
     public Team findById(Long teamId) {
         if (teamId == null) {
             throw new IllegalArgumentException("Team ID cannot be null");
@@ -55,9 +46,27 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
     }
 
     @Override
+    public Team findById(Class<Team> entity, Long id) {
+        return findById(id);
+    }
+
+    @Override
     public List<Team> list() {
         LOGGER.info("Retrieving all teams");
         return getDao().list(new Team());
+    }
+
+    @Override
+    public boolean update(Long id, Team teamUpdate) {
+        Team existingTeam = findById(id);
+
+        if (teamUpdate.getName() != null && !teamUpdate.getName().equals(existingTeam.getName())) {
+            validateTeamNameUniqueness(teamUpdate.getName(), id);
+        }
+
+        updateTeamFields(existingTeam, teamUpdate);
+        getDao().addOrUpdate(existingTeam);
+        return true;
     }
 
     @Override
@@ -77,6 +86,70 @@ public class TeamBean extends GenericBean<Team> implements TeamBeanI {
             return true;
         } catch (EntityNotFoundException e) {
             LOGGER.warning("Team with ID " + team.getId() + " not found for deletion");
+            return false;
+        }
+    }
+
+    // Implement the missing methods:
+    @Override
+    public List<User> getTeamMembers(Long teamId) {
+        Team team = findById(teamId);
+        return team.getUserTeams().stream()
+                .map(UserTeam::getUser)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Team findByName(String name) {
+        TypedQuery<Team> query = em.createQuery("SELECT t FROM Team t WHERE t.name = :name", Team.class)
+                .setParameter("name", name);
+        return query.getResultStream().findFirst().orElse(null);
+    }
+
+    @Override
+    public boolean addMemberToTeam(Long teamId, Long userId) {
+        try {
+            Team team = findById(teamId);
+            User user = em.find(User.class, userId);
+
+            if (user == null) {
+                throw new EntityNotFoundException("User with ID " + userId + " not found");
+            }
+
+            // Check if user is already in team
+            boolean alreadyMember = team.getUserTeams().stream()
+                    .anyMatch(ut -> ut.getUser().getId().equals(userId));
+
+            if (!alreadyMember) {
+                UserTeam userTeam = new UserTeam(user, team);
+                em.persist(userTeam);
+            }
+
+            return true;
+        } catch (Exception e) {
+            LOGGER.warning("Error adding member to team: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean removeMemberFromTeam(Long teamId, Long userId) {
+        try {
+            TypedQuery<UserTeam> query = em.createQuery(
+                    "SELECT ut FROM UserTeam ut WHERE ut.team.id = :teamId AND ut.user.id = :userId",
+                    UserTeam.class
+            );
+            query.setParameter("teamId", teamId);
+            query.setParameter("userId", userId);
+
+            UserTeam userTeam = query.getResultStream().findFirst().orElse(null);
+            if (userTeam != null) {
+                em.remove(userTeam);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            LOGGER.warning("Error removing member from team: " + e.getMessage());
             return false;
         }
     }

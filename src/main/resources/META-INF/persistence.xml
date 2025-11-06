@@ -8,21 +8,31 @@
             <!-- Database dialect for PostgreSQL -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 
-            <!-- Hibernate auto-detection for entities and mappings -->
-            <property name="hibernate.archive.autodetection" value="class, hbm"/>
-
             <!-- Print SQL to stdout (useful for debugging) -->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
 
-            <!-- Schema generation (update for development, remove or set to validate in production) -->
+            <!-- Schema generation: UPDATE for development, VALIDATE for production -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+
+            <!-- Alternative Hibernate-specific property -->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- Better schema update strategy -->
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+
+            <!-- For new development, you can use 'update' but switch to 'validate' later -->
+            <!-- <property name="hibernate.hbm2ddl.auto" value="update"/> -->
+
+            <!-- Handle enum types properly -->
+            <property name="hibernate.type.preferred_instant_jdbc_type" value="TIMESTAMP"/>
+            <property name="hibernate.type.preferred_instant_jdbc_type" value="TIMESTAMP"/>
 
             <!-- Flush mode -->
             <property name="hibernate.flushMode" value="AUTO"/>
 
-            <!-- Disable second-level cache (optional, based on your needs) -->
+            <!-- Disable second-level cache -->
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
             <property name="hibernate.cache.use_query_cache" value="false"/>
         </properties>

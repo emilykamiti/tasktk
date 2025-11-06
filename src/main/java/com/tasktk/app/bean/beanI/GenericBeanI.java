@@ -14,4 +14,7 @@ public interface GenericBeanI<T> extends Serializable {
     T findById(Class<T> entity, Long id);
 
     boolean update(Long id, T entityUpdate);
+
+    // Add this method to match GenericBean implementation
+    boolean delete(T entity);
 }

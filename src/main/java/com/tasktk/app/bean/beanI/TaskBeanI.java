@@ -3,7 +3,7 @@ package com.tasktk.app.bean.beanI;
 import com.tasktk.app.entity.Task;
 import java.util.List;
 
-public interface TaskBeanI {
+public interface TaskBeanI extends GenericBeanI<Task> {
     Task addOrUpdate(Task task);
     Task findById(Long taskId);
     List<Task> list();
@@ -15,4 +15,7 @@ public interface TaskBeanI {
     List<Task> findByTeam(Long teamId);
     List<Task> findByStatus(Task.Status status);
     List<Task> findByPriority(Task.Priority priority);
+
+    // Add this method to match GenericBeanI signature
+    Task findById(Class<Task> entity, Long id);
 }

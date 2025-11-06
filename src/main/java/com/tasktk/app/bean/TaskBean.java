@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.logging.Logger;
 
+
 @Stateless
 public class TaskBean extends GenericBean<Task> implements TaskBeanI {
     private static final Logger LOGGER = Logger.getLogger(TaskBean.class.getName());
@@ -65,7 +66,10 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
         getDao().addOrUpdate(existingTask);
         return true;
     }
-
+    @Override
+    public Task findById(Class<Task> entity, Long id) {
+        return findById(id); // Delegate to the other method
+    }
     @Override
     public boolean delete(Task task) {
         if (task == null || task.getId() == null) {
@@ -184,7 +188,7 @@ public class TaskBean extends GenericBean<Task> implements TaskBeanI {
         if (taskUpdate.getStatus() != null) existingTask.setStatus(taskUpdate.getStatus());
         if (taskUpdate.getPriority() != null) existingTask.setPriority(taskUpdate.getPriority());
         if (taskUpdate.getDueDate() != null) existingTask.setDueDate(taskUpdate.getDueDate());
-        if (taskUpdate.getAssignedUsers() != null) existingTask.setAssignedUsers(taskUpdate.getAssignedUsers());
+        if (taskUpdate.getAssignee() != null) existingTask.setAssignee(taskUpdate.getAssignee());
         if (taskUpdate.getTeam() != null) existingTask.setTeam(taskUpdate.getTeam());
         if (taskUpdate.getHasMeeting() != null) existingTask.setHasMeeting(taskUpdate.getHasMeeting());
         if (taskUpdate.getProgressPercentage() != null) existingTask.setProgressPercentage(taskUpdate.getProgressPercentage());

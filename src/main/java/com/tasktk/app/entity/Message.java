@@ -47,7 +47,7 @@ public class Message extends BaseEntity {
         this.content = content;
     }
 
-    // Getters and Setters
+    // Regular Getters and Setters
     public Team getTeam() { return team; }
     public void setTeam(Team team) { this.team = team; }
 

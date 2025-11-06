@@ -41,3 +41,4 @@
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/utility/EncryptMd5.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/utility/EncryptSha256.java
 /home/nasinza/tasktk/src/main/java/com/tasktk/app/utility/EncryptText.java
+/home/nasinza/tasktk/src/main/java/com/tasktk/filter/AuthFilter.java

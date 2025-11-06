@@ -1,3 +1,4 @@
+com/tasktk/filter/AuthFilter.class
 com/tasktk/app/entity/Task$Status.class
 com/tasktk/app/entity/UserTeam$RoleInTeam.class
 com/tasktk/app/entity/User.class
@@ -18,6 +19,7 @@ com/tasktk/app/bean/beanI/AuthBeanI.class
 com/tasktk/app/api/rest/BaseEntityRestApi.class
 com/tasktk/app/api/config/Rest.class
 com/tasktk/app/bean/beanI/TeamBeanI.class
+com/tasktk/app/utility/EncryptMd5.class
 com/tasktk/app/bean/GenericBean.class
 com/tasktk/app/entity/Task$Priority.class
 com/tasktk/app/bean/TeamBean.class
@@ -33,7 +35,6 @@ com/tasktk/app/api/rest/ActivityRestApi.class
 com/tasktk/app/api/rest/TaskRestApi.class
 com/tasktk/app/entity/Team.class
 com/tasktk/app/dao/GenericDao.class
-com/resale/app/utility/EncryptMd5.class
 com/tasktk/app/bean/beanI/GenericBeanI.class
 com/tasktk/app/bean/beanI/ActivityBeanI.class
 com/tasktk/app/bean/ActivityBean.class

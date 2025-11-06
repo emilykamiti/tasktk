@@ -7,9 +7,9 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
 import java.io.Serializable;
 import java.util.List;
+
 
 @Stateless
 public abstract class GenericBean<T> implements GenericBeanI<T>, Serializable {
@@ -41,7 +41,7 @@ public abstract class GenericBean<T> implements GenericBeanI<T>, Serializable {
     @Override
     public void delete(Class<?> entityClass, Long id) {
         genericDao.setEm(em);
-        genericDao.delete((Class<T>) entityClass, id);
+        genericDao.delete(entityClass, id);
     }
 
     @Override
@@ -50,10 +50,29 @@ public abstract class GenericBean<T> implements GenericBeanI<T>, Serializable {
         return genericDao.findById(entity, id);
     }
 
+    // ADD THIS METHOD to match the interface:
+    @Override
+    public boolean delete(T entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("Entity cannot be null");
+        }
+        try {
+            // Using reflection to get the ID
+            java.lang.reflect.Method getIdMethod = entity.getClass().getMethod("getId");
+            Long id = (Long) getIdMethod.invoke(entity);
+
+            if (id != null) {
+                delete(entity.getClass(), id);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting entity: " + e.getMessage(), e);
+        }
+    }
+
     public GenericDao<T> getDao() {
         genericDao.setEm(em);
         return (GenericDao<T>) genericDao;
     }
-
-
 }

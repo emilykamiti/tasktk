@@ -1,19 +1,16 @@
 package com.tasktk.app.api.rest;
 
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-@Produces(MediaType.APPLICATION_JSON)
 public class RestResponseWrapper implements Serializable {
     private boolean success;
     private String message;
     private Object data;
     private Map<String, Object> meta;
 
+    // Constructors
     public RestResponseWrapper() {
         this(true, "OK");
     }
@@ -33,7 +30,7 @@ public class RestResponseWrapper implements Serializable {
         this.meta = new HashMap<>();
     }
 
-
+    // Static factory methods
     public static RestResponseWrapper success() {
         return new RestResponseWrapper();
     }
@@ -79,6 +76,10 @@ public class RestResponseWrapper implements Serializable {
 
     public Map<String, Object> getMeta() {
         return meta;
+    }
+
+    public void setMeta(Map<String, Object> meta) {
+        this.meta = meta;
     }
 
     public RestResponseWrapper addMeta(String key, Object value) {

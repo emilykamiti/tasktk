@@ -1,5 +1,6 @@
 package com.tasktk.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.DynamicInsert;
@@ -36,10 +37,11 @@ public class User extends BaseEntity {
     @Column(name = "role", nullable = false)
     private Role role;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserTeam> userTeams = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "assignedUsers", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> assignedTasks = new ArrayList<>();
 
     // Constructors
@@ -52,30 +54,37 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
-    // Getters and Setters
+
+    // Getters and setters
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getConfirmPassword() { return confirmPassword; }
-    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
-
-    public String getOldPassword() { return oldPassword; }
-    public void setOldPassword(String oldPassword) { this.oldPassword = oldPassword; }
-
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
 
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+
+    @JsonIgnore
     public List<UserTeam> getUserTeams() { return userTeams; }
     public void setUserTeams(List<UserTeam> userTeams) { this.userTeams = userTeams; }
 
+    @JsonIgnore
     public List<Task> getAssignedTasks() { return assignedTasks; }
     public void setAssignedTasks(List<Task> assignedTasks) { this.assignedTasks = assignedTasks; }
+
+    @JsonIgnore
+    public String getConfirmPassword() { return confirmPassword; }
+    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
+
+    @JsonIgnore
+    public String getOldPassword() { return oldPassword; }
+    public void setOldPassword(String oldPassword) { this.oldPassword = oldPassword; }
 
     public enum Role {
         ADMIN, MANAGER, MEMBER

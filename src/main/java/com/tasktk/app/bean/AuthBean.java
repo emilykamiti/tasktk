@@ -9,6 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 
+
 @Stateless
 public class AuthBean extends GenericBean<User> implements AuthBeanI, Serializable {
 

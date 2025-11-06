@@ -13,4 +13,7 @@ public interface ActivityBeanI extends GenericBeanI<Activity> {
     List<Activity> findByTask(Long taskId);
     List<Activity> findByType(Activity.Type type);
     List<Activity> getRecentActivities(int limit);
+
+    // Add this method to match GenericBeanI
+    Activity findById(Class<Activity> entity, Long id);
 }
