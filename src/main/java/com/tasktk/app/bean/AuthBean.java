@@ -21,7 +21,7 @@ public class AuthBean extends GenericBean<User> implements AuthBeanI, Serializab
 
     public User authenticate(User loginUser) {
         if (loginUser == null || loginUser.getName() == null || loginUser.getPassword() == null) {
-            throw new IllegalArgumentException("Username and password are required");
+            throw new IllegalArgumentException("username and password are required");
         }
 
         try {

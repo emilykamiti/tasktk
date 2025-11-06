@@ -1,3 +1,4 @@
+// hooks/useUsers.js
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 
@@ -11,10 +12,11 @@ export const useUsers = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.users.getAll();
-      setUsers(data);
+      const usersData = await api.users.getAll();
+      setUsers(usersData);
     } catch (err) {
       setError(err.message);
+      setUsers([]); // Ensure users is always an array
     } finally {
       setLoading(false);
     }
@@ -24,11 +26,7 @@ export const useUsers = () => {
   const registerUser = async (userData) => {
     setError(null);
     try {
-      // Use auth register if available, otherwise use users create
-      const newUser = await api.auth.register
-        ? await api.auth.register(userData)
-        : await api.users.create(userData);
-
+      const newUser = await api.auth.register(userData);
       setUsers(prev => [...prev, newUser]);
       return newUser;
     } catch (err) {
